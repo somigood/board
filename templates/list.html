@@ -6,20 +6,45 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>번호</th><th>제목</th><th>작성자</th>
+          <th>번호</th>
+          <th>제목</th>
+          <th>작성자</th>
         </tr>
       </thead>
       <tbody>
         {% for article in article_list %}
-        <tr>
+        <tr onclick="detail({{ article.id }})">
+          <td>
+            {{ article.id }}
+          </td>
           <td>{{ article.title }}</td>
-          <td>{{ article.content }}</td>
           <td>{{ article.user.name }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    <div style='text-align:center;'>
+      <ul class='pagination'>
+        {% for i in page_info %}
+        <li>
+          <a href='/article/list/?page={{ i }}'>
+            {{ i }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+      
+    <button onclick="move()" class="btn btn-danger input-lg">글쓰기</button>
   </div>
 </div>
-
+<script>
+  function detail(n) {
+    location = `/article/detail/${n}/`
+  }
+  function move() {
+    location = "/article/write/";
+  }
+</script>
 {% endblock %}
