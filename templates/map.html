@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+  <div class="container text-center">
+    <div id="map" style="width:500px; height:400px; margin:0 auto;"></div>
+  </div>
+</div>
+
+<script src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=da146a2a6ff6a54903c1d2a7caecd1c7"></script>
+<script>
+var container = document.getElementById('map');
+var options = {
+  center : new kakao.maps.LatLng(37.4980239, 127.027572), // 강남역
+  level : 4
+};
+
+var map = new kakao.maps.Map(container, options);
+
+var markerPosition = new kakao.maps.LatLng(37.4980239, 127.027572); 
+
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+
+marker.setMap(map);
+
+$.ajax({
+  url: '/map_data/',
+  data: {
+    'lat' : 37.4980239, 'lng' : 127.027572
+  },
+  success: function(res) {
+    for(var i = 0; i < res.length; i++) {
+      var marker = new kakao.maps.Marker({
+          map : map, // 마커를 표시할 지도
+          position : new kakao.maps.LatLng(res[i].lat, res[i].lng),
+          title : res[i].title,
+      });
+    }
+  }
+});
+
+</script>
+{% endblock %}
